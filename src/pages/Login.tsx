@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { FormError } from "../components/UI/FormError";
 
 interface ILoginForm {
   email?: string;
@@ -31,11 +32,11 @@ export default function Login() {
               className="input"
               {...register("email", { required: "Email is required" })}
               placeholder="email"
-              required
               type="email"
+              required
             />
             {errors.email?.message && (
-              <span className="error mt-1">{errors.email.message}</span>
+              <FormError errorMessage={errors.email.message} />
             )}
           </div>
           <div className="mb-4 flex flex-col">
@@ -46,16 +47,14 @@ export default function Login() {
                 minLength: 8,
               })}
               placeholder="password"
-              required
               type="password"
+              required
             />
             {errors.password?.message && (
-              <span className="error mt-1">{errors.password.message}</span>
+              <FormError errorMessage={errors.password.message} />
             )}
             {errors.password?.type === "minLength" && (
-              <span className="error mt-1">
-                Password must be at least 8 characters long
-              </span>
+              <FormError errorMessage="Password must be at least 8 characters long" />
             )}
           </div>
           <button className="btn mt-4">Log In</button>
