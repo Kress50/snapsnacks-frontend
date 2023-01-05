@@ -1,9 +1,7 @@
+import LoggedOutRouter from "./routers/LoggedOutRouter";
+
 function App() {
-  return (
-    <div>
-      <h1>Hello world</h1>
-    </div>
-  );
+  return <LoggedOutRouter />;
 }
 
 export default App;
