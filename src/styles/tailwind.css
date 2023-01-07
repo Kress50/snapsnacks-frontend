@@ -11,6 +11,10 @@
     @apply text-amber-500 hover:underline;
   }
 
+  .logo {
+    @apply select-none rounded-lg bg-amber-500;
+  }
+
   .error {
     @apply text-sm font-medium text-red-500;
   }

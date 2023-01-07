@@ -1,15 +1,15 @@
 import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { FormError } from "../components/UI/FormError";
-import testLogo from "../images/ruby.svg";
 import { Button } from "../components/UI/Button";
 import { Link, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet";
 import { UserRole } from "../api/types/globalTypes";
 import {
   CreateAccountMutation,
   CreateAccountMutationVariables,
 } from "../api/types/CreateAccountMutation";
+import { Logo } from "../components/UI/Logo";
+import { Helmet } from "react-helmet-async";
 
 const CREATE_ACCOUNT_MUTATION = gql`
   mutation CreateAccountMutation($createAccountInput: CreateAccountInput!) {
@@ -74,7 +74,7 @@ export default function SignUp() {
       </Helmet>
       <div className="flex h-screen flex-col items-center">
         <div className="mt-12 flex w-full max-w-screen-sm flex-col items-center px-5 md:mt-36">
-          <img src={testLogo} alt="test-logo" className="w-20" />
+          <Logo size="w-36" />
           <h3 className="mt-8 w-full text-3xl font-semibold">Welcome!</h3>
           <p className="text-md mt-4 w-full">
             Create your account using credentials
@@ -89,6 +89,7 @@ export default function SignUp() {
                 {...register("email", {
                   required: "Email is required",
                   pattern:
+                    // eslint-disable-next-line no-useless-escape
                     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 })}
                 placeholder="email"

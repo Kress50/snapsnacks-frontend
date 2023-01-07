@@ -5,11 +5,12 @@ import {
   LoginMutation,
   LoginMutationVariables,
 } from "../api/types/LoginMutation";
-import testLogo from "../images/ruby.svg";
 import { Button } from "../components/UI/Button";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet";
-import { IsLoggedInVar } from "../apollo";
+import { authTokenVar, isLoggedInVar } from "../apollo";
+import { Logo } from "../components/UI/Logo";
+import { LOCALSTORAGE_TOKEN } from "../constants";
+import { Helmet } from "react-helmet-async";
 
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($loginAccountInput: LoginAccountInput!) {
@@ -37,9 +38,10 @@ export default function Login() {
     const {
       loginAccount: { ok, token },
     } = data;
-    if (ok) {
-      console.log(token);
-      IsLoggedInVar(true);
+    if (ok && token) {
+      localStorage.setItem(LOCALSTORAGE_TOKEN, token);
+      authTokenVar(token);
+      isLoggedInVar(true);
     }
   };
   const [loginMutation, { data: loginMutationResult, loading }] = useMutation<
@@ -69,7 +71,7 @@ export default function Login() {
       </Helmet>
       <div className="flex h-screen flex-col items-center">
         <div className="mt-12 flex w-full max-w-screen-sm flex-col items-center px-5 md:mt-36">
-          <img src={testLogo} alt="test-logo" className="w-20" />
+          <Logo size="w-36" />
           <h3 className="mt-8 w-full text-3xl font-semibold">Welcome back!</h3>
           <p className="text-md mt-4 w-full">
             Login using your account credentials
@@ -84,6 +86,7 @@ export default function Login() {
                 {...register("email", {
                   required: "Email is required",
                   pattern:
+                    // eslint-disable-next-line no-useless-escape
                     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 })}
                 placeholder="email"
