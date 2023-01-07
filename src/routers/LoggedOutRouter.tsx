@@ -6,7 +6,7 @@ export default function LoggedOutRouter() {
     <BrowserRouter>
       <Routes>
         <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/" element={<Login />} />
+        <Route path="/*" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

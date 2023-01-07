@@ -12,7 +12,7 @@
   }
 
   .logo {
-    @apply select-none rounded-lg bg-amber-500;
+    @apply select-none rounded-lg bg-gradient-to-tr from-orange-500 to-amber-300;
   }
 
   .error {
