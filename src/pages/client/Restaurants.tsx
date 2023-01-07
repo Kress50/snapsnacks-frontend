@@ -1,5 +1,3 @@
-const ClientRouter = () => {}
-
 const Restaurants = () => {
   return <div>Restaurants</div>;
 };
