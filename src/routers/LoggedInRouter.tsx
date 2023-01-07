@@ -5,15 +5,20 @@ import Loading from "../components/Loading";
 import PageLayout from "../components/PageLayout";
 import { useMeQuery } from "../hooks/useMeQuery";
 import Restaurants from "../pages/client/Restaurants";
+import ConfirmEmail from "../pages/ConfirmEmail";
 import NotFound from "../pages/NotFound";
 
-const clientRoutes = [<Route path="/" element={<Restaurants />} />];
+const clientRoutes = [<Route key={1} path="/" element={<Restaurants />} />];
 
 export default function LoggedInRouter() {
   const { data, loading, error } = useMeQuery();
 
   if (loading || !data) {
-    return <Loading />;
+    return (
+      <div className="flex h-screen flex-col items-center justify-center">
+        <Loading />;
+      </div>
+    );
   }
 
   if (error) {
@@ -26,6 +31,7 @@ export default function LoggedInRouter() {
         <Route element={<PageLayout />}>
           {data.me.role === UserRole.Client && clientRoutes}
         </Route>
+        <Route path="/confirm/*" element={<ConfirmEmail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
