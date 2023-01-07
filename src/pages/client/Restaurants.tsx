@@ -1,5 +1,5 @@
 const Restaurants = () => {
-  return <div>Restaurants</div>;
+  return <div className="pt-20">Restaurants</div>;
 };
 
 export default Restaurants;

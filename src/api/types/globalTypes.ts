@@ -19,6 +19,11 @@ export interface CreateAccountInput {
   role: UserRole;
 }
 
+export interface EditAccountInput {
+  email?: string | null;
+  password?: string | null;
+}
+
 export interface LoginAccountInput {
   email: string;
   password: string;
