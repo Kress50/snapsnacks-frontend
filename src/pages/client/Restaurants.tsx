@@ -3,8 +3,8 @@ import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { RESTAURANT_FRAGMENT } from "../../api/fragments";
+import { Link, useNavigate } from "react-router-dom";
+import { CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT } from "../../api/fragments";
 import {
   restaurantsPageQuery,
   restaurantsPageQueryVariables,
@@ -23,11 +23,7 @@ const RESTAURANTS_QUERY = gql`
       ok
       error
       categories {
-        id
-        name
-        coverImage
-        slug
-        restaurantCount
+        ...CategoryParts
       }
     }
     Restaurants(input: $restaurantsInput) {
@@ -41,6 +37,7 @@ const RESTAURANTS_QUERY = gql`
     }
   }
   ${RESTAURANT_FRAGMENT}
+  ${CATEGORY_FRAGMENT}
 `;
 
 const Restaurants = () => {
@@ -98,11 +95,9 @@ const Restaurants = () => {
           <div className="mx-4 mb-16 sm:mx-16">
             <div className="my-4 flex flex-wrap justify-center gap-12">
               {data?.allCategories.categories?.map((category) => (
-                <Category
-                  key={category.name}
-                  image={category.coverImage}
-                  name={category.name}
-                />
+                <Link key={category.name} to={`/category/${category.slug}`}>
+                  <Category image={category.coverImage} name={category.name} />
+                </Link>
               ))}
             </div>
             <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
