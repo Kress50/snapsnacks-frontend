@@ -13,7 +13,7 @@ export const Button: React.FC<IButtonProps> = ({
     <button
       className={`select-none rounded-md py-3 px-5 text-lg font-semibold text-white shadow-sm outline-none transition-colors ${
         canClick
-          ? "bg-amber-500 hover:bg-orange-500 focus:bg-orange-500 active:bg-amber-500"
+          ? "bg-amber-500 hover:brightness-110 focus:bg-orange-500 active:bg-amber-500"
           : "pointer-events-none bg-gray-300"
       }`}
     >

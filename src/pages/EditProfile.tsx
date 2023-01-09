@@ -1,4 +1,5 @@
-import { gql, useApolloClient, useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
+import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import {
   EditAccountMutation,
@@ -29,7 +30,7 @@ const EditProfile = () => {
       editProfile: { ok },
     } = data;
     if (ok && userData) {
-      await  refetch();
+      await refetch();
     }
   };
   const {
@@ -58,55 +59,60 @@ const EditProfile = () => {
   }
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center">
-      <div className="flex w-full max-w-screen-sm flex-col items-center px-5">
-        <h4 className="w-full text-xl font-semibold">Edit Profile</h4>
-        <form
-          onSubmit={handleSubmit(submitHandler)}
-          className="mt-4 mb-5 flex w-full flex-col"
-        >
-          <div className="mb-4 flex flex-col">
-            <input
-              className="input"
-              {...register("email", {
-                pattern:
-                  // eslint-disable-next-line no-useless-escape
-                  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-              })}
-              placeholder="email"
-              type="email"
+    <>
+      <Helmet>
+        <title>Edit Profile | SnapSnacks</title>
+      </Helmet>
+      <div className="flex h-screen flex-col items-center justify-center">
+        <div className="flex w-full max-w-screen-sm flex-col items-center px-5">
+          <h4 className="w-full text-xl font-semibold">Edit Profile</h4>
+          <form
+            onSubmit={handleSubmit(submitHandler)}
+            className="mt-4 mb-5 flex w-full flex-col"
+          >
+            <div className="mb-4 flex flex-col">
+              <input
+                className="input"
+                {...register("email", {
+                  pattern:
+                    // eslint-disable-next-line no-useless-escape
+                    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                })}
+                placeholder="email"
+                type="email"
+              />
+              {errors.email?.message && (
+                <FormError errorMessage={errors.email.message} />
+              )}
+              {errors.email?.type === "pattern" && (
+                <FormError errorMessage="This email is not valid" />
+              )}
+            </div>
+            <div className="mb-4 flex flex-col">
+              <input
+                className="input"
+                {...register("password")}
+                placeholder="password"
+                type="password"
+              />
+              {errors.password?.message && (
+                <FormError errorMessage={errors.password.message} />
+              )}
+            </div>
+            <Button
+              actionText="Update Profile"
+              canClick={isValid}
+              loading={loading}
             />
-            {errors.email?.message && (
-              <FormError errorMessage={errors.email.message} />
+            {editAccountMutationResult?.editProfile.error && (
+              <FormError
+                errorMessage={editAccountMutationResult.editProfile.error}
+              />
             )}
-            {errors.email?.type === "pattern" && (
-              <FormError errorMessage="This email is not valid" />
-            )}
-          </div>
-          <div className="mb-4 flex flex-col">
-            <input
-              className="input"
-              {...register("password")}
-              placeholder="password"
-              type="password"
-            />
-            {errors.password?.message && (
-              <FormError errorMessage={errors.password.message} />
-            )}
-          </div>
-          <Button
-            actionText="Update Profile"
-            canClick={isValid}
-            loading={loading}
-          />
-          {editAccountMutationResult?.editProfile.error && (
-            <FormError
-              errorMessage={editAccountMutationResult.editProfile.error}
-            />
-          )}
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

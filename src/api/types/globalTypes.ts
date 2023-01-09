@@ -29,6 +29,10 @@ export interface LoginAccountInput {
   password: string;
 }
 
+export interface RestaurantsInput {
+  page: number;
+}
+
 export interface VerifyEmailInput {
   code: string;
 }

@@ -1,5 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { verifyEmail, verifyEmailVariables } from "../api/types/verifyEmail";
 import Loading from "../components/Loading";
@@ -42,11 +43,16 @@ const ConfirmEmail = () => {
   }, [verifyEmail]);
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center gap-4">
-      <Loading />
-      <h2 className="text-xl font-semibold">Confirming email...</h2>
-      <h4 className="text-sm">Don't close this page</h4>
-    </div>
+    <>
+      <Helmet>
+        <title>Confirm Email | SnapSnacks</title>
+      </Helmet>
+      <div className="flex h-screen flex-col items-center justify-center gap-4">
+        <Loading />
+        <h2 className="text-xl font-semibold">Confirming email...</h2>
+        <h4 className="text-sm">Don't close this page</h4>
+      </div>
+    </>
   );
 };
 

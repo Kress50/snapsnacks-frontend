@@ -70,7 +70,7 @@ export default function SignUp() {
   return (
     <>
       <Helmet>
-        <title>SignUp | Snapsnacks</title>
+        <title>SignUp | SnapSnacks</title>
       </Helmet>
       <div className="flex h-screen flex-col items-center">
         <div className="mt-12 flex w-full max-w-screen-sm flex-col items-center px-5 md:mt-36">

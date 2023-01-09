@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
 import { Logo } from "../components/UI/Logo";
 
@@ -9,6 +10,9 @@ const NotFound = () => {
 
   return (
     <>
+      <Helmet>
+        <title>404 Not Found | SnapSnacks</title>
+      </Helmet>
       <div className="flex h-screen flex-col items-center justify-center">
         <div className="flex flex-col items-center justify-center">
           <Logo size="w-20" />
