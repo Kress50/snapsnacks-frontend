@@ -17,15 +17,15 @@ const Pagination: React.FC<IPaginationProps> = ({ data, page, setPage }) => {
 
   return (
     <>
-      {data?.Restaurants.totalPages !== 1 && (
+      {data?.totalPages > 1 && (
         <div className="my-10 mx-auto grid max-w-md grid-cols-3 place-items-center">
-          {page === data?.Restaurants.totalPages ? (
+          {page === data?.totalPages ? (
             <PaginationButton func={prevPageHandler} arrow={faArrowLeft} />
           ) : (
             <div></div>
           )}
           <span className="select-none text-lg font-semibold">
-            Page {page} of {data?.Restaurants.totalPages}
+            Page {page} of {data?.totalPages}
           </span>
           {page !== data?.Restaurants.totalPages ? (
             <PaginationButton func={nextPageHandler} arrow={faArrowRight} />

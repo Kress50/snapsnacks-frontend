@@ -56,12 +56,12 @@ const Restaurants = () => {
         <SearchBar />
         {!loading && (
           <div className="mx-4 mb-16 sm:mx-16">
-            <CategoryList data={data} />
-            <RestaurantsList data={data} />
+            <CategoryList data={data?.allCategories} />
+            <RestaurantsList data={data?.Restaurants} />
           </div>
         )}
       </div>
-      <Pagination data={data} page={page} setPage={setPage} />
+      <Pagination data={data?.Restaurants} page={page} setPage={setPage} />
     </>
   );
 };
