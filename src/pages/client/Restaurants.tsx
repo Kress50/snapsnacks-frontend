@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { RESTAURANT_FRAGMENT } from "../../api/fragments";
 import {
   restaurantsPageQuery,
   restaurantsPageQueryVariables,
@@ -35,17 +36,11 @@ const RESTAURANTS_QUERY = gql`
       totalPages
       totalItems
       restaurants {
-        id
-        name
-        coverImage
-        address
-        isPromoted
-        category {
-          name
-        }
+        ...RestaurantParts
       }
     }
   }
+  ${RESTAURANT_FRAGMENT}
 `;
 
 const Restaurants = () => {

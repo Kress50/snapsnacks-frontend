@@ -39,8 +39,11 @@ const ConfirmEmail = () => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, code] = window.location.href.split("code=");
+    if (!code) {
+      navigate("/error");
+    }
     verifyEmail({ variables: { verifyEmailInput: { code } } });
-  }, [verifyEmail]);
+  }, [verifyEmail, navigate]);
 
   return (
     <>
