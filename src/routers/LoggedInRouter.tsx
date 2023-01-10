@@ -5,6 +5,7 @@ import Loading from "../components/Loading";
 import PageLayout from "../components/PageLayout";
 import { useMeQuery } from "../hooks/useMeQuery";
 import CategoryPage from "../pages/client/CategoryPage";
+import Restaurant from "../pages/client/Restaurant";
 import Restaurants from "../pages/client/Restaurants";
 import SearchPage from "../pages/client/SearchPage";
 import ConfirmEmail from "../pages/ConfirmEmail";
@@ -16,6 +17,7 @@ const clientRoutes = [
   <Route key={2} path="/edit-profile" element={<EditProfile />} />,
   <Route key={3} path="/search" element={<SearchPage />} />,
   <Route key={4} path="/category/:slug" element={<CategoryPage />} />,
+  <Route key={5} path="/restaurant/:id" element={<Restaurant />} />,
 ];
 
 export default function LoggedInRouter() {

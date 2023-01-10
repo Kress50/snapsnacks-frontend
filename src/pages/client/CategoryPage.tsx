@@ -49,7 +49,6 @@ const CategoryPage = () => {
       },
     }
   );
-  console.log(data);
 
   return (
     <>
@@ -64,6 +63,11 @@ const CategoryPage = () => {
             {data?.category.totalItems !== 0 ? (
               <RestaurantsList data={data?.category} />
             ) : (
+              <span className="mt-12 flex justify-center text-3xl font-semibold">
+                No restaurants found
+              </span>
+            )}
+            {data?.category.error && (
               <span className="mt-12 flex justify-center text-3xl font-semibold">
                 No restaurants found
               </span>

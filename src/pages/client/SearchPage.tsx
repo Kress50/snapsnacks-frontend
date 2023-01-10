@@ -7,7 +7,6 @@ import {
   searchRestaurant,
   searchRestaurantVariables,
 } from "../../api/types/searchRestaurant";
-import CategoryList from "../../components/CategoryList";
 import Pagination from "../../components/Pagination";
 import RestaurantsList from "../../components/RestaurantsList";
 import SearchBar from "../../components/SearchBar";
