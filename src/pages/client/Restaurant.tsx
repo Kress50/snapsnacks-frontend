@@ -19,7 +19,6 @@ const RESTAURANT_QUERY = gql`
 
 const Restaurant = () => {
   const params = useParams();
-  console.log(params);
   const { data, loading } = useQuery<restaurant, restaurantVariables>(
     RESTAURANT_QUERY,
     {
@@ -45,16 +44,16 @@ const Restaurant = () => {
           }}
         >
           <div
-            className={`relative top-24 flex w-3/12 flex-col bg-white py-4 pl-48 ${
+            className={`relative top-24 flex w-1/2 flex-col bg-white py-4 pl-4 lg:w-3/12 xl:pl-20 ${
               data?.Restaurant.restaurant?.isPromoted
                 ? "shadow-promoted shadow-amber-500"
                 : ""
             }`}
           >
-            <h4 className="mb-3 text-4xl font-bold">
+            <h4 className="mb-3 text-3xl font-bold">
               {data?.Restaurant.restaurant?.name}
             </h4>
-            <h5 className="mb-2 font-normal">
+            <h5 className="text-md mb-2 font-normal">
               {data?.Restaurant.restaurant?.category?.name}
             </h5>
             <h6 className="border-t border-gray-300 pt-2 text-sm font-light">

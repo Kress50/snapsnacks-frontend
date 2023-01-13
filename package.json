@@ -33,6 +33,7 @@
     "start": "react-scripts start",
     "build": "npm run apollo:types & tailwind:build & react-scripts build",
     "test": "react-scripts test",
+    "test:cov": "npm test -- --coverage --watchAll=false",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -55,6 +56,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
+    "mock-apollo-client": "^1.2.1",
     "postcss": "^8.4.20",
     "postcss-import": "^15.1.0",
     "postcss-nesting": "^10.2.0",
@@ -64,5 +66,12 @@
   },
   "resolutions": {
     "graphql": "^16.6.0"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "./src/components/**/*.tsx",
+      "./src/pages/**/*.tsx",
+      "./src/routers/**/*.tsx"
+    ]
   }
 }

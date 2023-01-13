@@ -33,7 +33,7 @@ export default function Login() {
     getValues,
     formState: { errors, isValid },
     handleSubmit,
-  } = useForm<ILoginForm>({ mode: "onBlur" });
+  } = useForm<ILoginForm>({ mode: "onChange" });
   const onCompleted = (data: LoginMutation) => {
     const {
       loginAccount: { ok, token },
