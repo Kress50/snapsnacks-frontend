@@ -33,7 +33,7 @@ export default function SignUp() {
     formState: { errors, isValid },
     handleSubmit,
   } = useForm<ISignUpForm>({
-    mode: "onBlur",
+    mode: "onChange",
     defaultValues: { role: UserRole.Client },
   });
   const navigate = useNavigate();

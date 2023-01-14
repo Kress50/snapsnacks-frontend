@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/aria-role */
 import React from "react";
 
 interface IFormErrorProps {
@@ -5,5 +6,9 @@ interface IFormErrorProps {
 }
 
 export const FormError: React.FC<IFormErrorProps> = ({ errorMessage }) => {
-  return <span className="error mt-1">{errorMessage}</span>;
+  return (
+    <span role="error" className="error mt-1">
+      {errorMessage}
+    </span>
+  );
 };
