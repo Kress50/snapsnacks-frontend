@@ -1,15 +1,12 @@
+import { TEST_EMAIL, TEST_PW } from "../../testingConstants";
+
 describe("Login", () => {
   it("should see login page", () => {
     cy.visit("/").title().should("eq", "Login | SnapSnacks");
   });
   it("can fill out the form", () => {
-    cy.visit("/");
-    cy.findByPlaceholderText("email").type("client@we.com");
-    cy.findByPlaceholderText("password").type("112233");
-    cy.findByText("Log In")
-      .should("not.have.class", "pointer-events-none")
-      .click();
-    cy.window().its("localStorage.token").should("be.a", "string");
+    //@ts-ignore
+    cy.login(TEST_EMAIL, TEST_PW);
   });
   it("can see email and pw validation errors", () => {
     cy.visit("/");

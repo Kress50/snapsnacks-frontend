@@ -36,3 +36,23 @@
 //   }
 // }
 import "@testing-library/cypress/add-commands";
+
+Cypress.Commands.add("assertLoggedIn" as any, () => {
+  cy.window().its("localStorage.token").should("be.a", "string");
+});
+
+Cypress.Commands.add("assertLoggedOut" as any, () => {
+  cy.window().its("localStorage.token").should("be.undefined");
+});
+
+Cypress.Commands.add("login" as any, (email: string, password: string) => {
+  //@ts-ignore
+  cy.assertLoggedOut();
+  cy.visit("/");
+  cy.title().should("eq", "Login | SnapSnacks");
+  cy.findByPlaceholderText("email").type(email);
+  cy.findByPlaceholderText("password").type(password);
+  cy.findByText("Log In").click();
+  //@ts-ignore
+  cy.assertLoggedIn();
+});
