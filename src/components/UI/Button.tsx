@@ -1,14 +1,19 @@
+import { Link } from "react-router-dom";
+
 interface IButtonProps {
   actionText: string;
   canClick: boolean;
   loading: boolean;
+  link?: string;
 }
 
 export const Button: React.FC<IButtonProps> = ({
   actionText,
   canClick,
   loading,
+  link = null,
 }) => {
+  const buttonOutput = loading ? "Loading..." : actionText;
   return (
     <button
       className={`select-none rounded-md py-3 px-5 text-lg font-semibold text-white shadow-sm outline-none transition-colors ${
@@ -17,7 +22,7 @@ export const Button: React.FC<IButtonProps> = ({
           : "pointer-events-none bg-gray-300"
       }`}
     >
-      {loading ? "Loading..." : actionText}
+      {link ? <Link to={link}>{buttonOutput}</Link> : buttonOutput}
     </button>
   );
 };

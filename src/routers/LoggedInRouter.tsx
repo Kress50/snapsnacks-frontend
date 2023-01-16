@@ -11,13 +11,37 @@ import SearchPage from "../pages/client/SearchPage";
 import ConfirmEmail from "../pages/ConfirmEmail";
 import EditProfile from "../pages/EditProfile";
 import NotFound from "../pages/NotFound";
+import AddRestaurant from "../pages/owner/AddRestaurant";
+import MyRestaurants from "../pages/owner/MyRestaurants";
 
 const clientRoutes = [
-  <Route key={1} path="/" element={<Restaurants />} />,
-  <Route key={2} path="/edit-profile" element={<EditProfile />} />,
-  <Route key={3} path="/search" element={<SearchPage />} />,
-  <Route key={4} path="/category/:slug" element={<CategoryPage />} />,
-  <Route key={5} path="/restaurant/:id" element={<Restaurant />} />,
+  {
+    path: "/",
+    element: <Restaurants />,
+  },
+  {
+    path: "/search",
+    element: <SearchPage />,
+  },
+  {
+    path: "/category/:slug",
+    element: <CategoryPage />,
+  },
+  {
+    path: "/restaurant/:id",
+    element: <Restaurant />,
+  },
+];
+
+const ownerRoutes = [
+  {
+    path: "/",
+    element: <MyRestaurants />,
+  },
+  {
+    path: "/add-restaurant",
+    element: <AddRestaurant />,
+  },
 ];
 
 export default function LoggedInRouter() {
@@ -39,7 +63,23 @@ export default function LoggedInRouter() {
     <BrowserRouter>
       <Routes>
         <Route element={<PageLayout />}>
-          {data.me.role === UserRole.Client && clientRoutes}
+          {data.me.role === UserRole.Client &&
+            clientRoutes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={route.element}
+              />
+            ))}
+          {data.me.role === UserRole.Owner &&
+            ownerRoutes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={route.element}
+              />
+            ))}
+          <Route path="/edit-profile" element={<EditProfile />} />,
         </Route>
         <Route path="/confirm/*" element={<ConfirmEmail />} />
         <Route path="*" element={<NotFound />} />

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { category_category } from "../api/types/category";
+import { myRestaurants_myRestaurants } from "../api/types/myRestaurants";
 import { restaurantsPageQuery_Restaurants } from "../api/types/restaurantsPageQuery";
 import { searchRestaurant_searchRestaurant } from "../api/types/searchRestaurant";
 import RestaurantCard from "./UI/RestaurantCard";
@@ -8,7 +9,8 @@ interface IRestaurantsListProps {
   data?:
     | restaurantsPageQuery_Restaurants
     | searchRestaurant_searchRestaurant
-    | category_category;
+    | category_category
+    | myRestaurants_myRestaurants;
 }
 
 const RestaurantsList: React.FC<IRestaurantsListProps> = ({ data }) => {
