@@ -161,9 +161,15 @@ const AddRestaurant = () => {
             )}
           </div>
           <div className="flex flex-col">
-            <select className="input" {...register("categoryName")}>
+            <select
+              className="input"
+              defaultValue={"sandwiches"}
+              {...register("categoryName")}
+            >
               {categoryData.data?.allCategories.categories?.map((category) => (
-                <option key={category.slug}>{category.name}</option>
+                <option key={category.slug} value={category.slug}>
+                  {category.name}
+                </option>
               ))}
             </select>
           </div>
@@ -195,7 +201,7 @@ const AddRestaurant = () => {
               Restaurant added successfully! Returning to restaurants list...
             </h4>
           )}
-          {!genericUploadError && (
+          {genericUploadError && (
             <h4 className="text-center font-semibold text-red-500">
               Something went wrong... Try again.
             </h4>
