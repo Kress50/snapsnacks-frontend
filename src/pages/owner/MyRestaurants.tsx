@@ -6,7 +6,7 @@ import { myRestaurants } from "../../api/types/myRestaurants";
 import RestaurantsList from "../../components/RestaurantsList";
 import { Button } from "../../components/UI/Button";
 
-const MY_RESTAURANTS_QUERY = gql`
+export const MY_RESTAURANTS_QUERY = gql`
   query myRestaurants {
     myRestaurants {
       error
