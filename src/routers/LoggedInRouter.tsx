@@ -12,6 +12,7 @@ import ConfirmEmail from "../pages/ConfirmEmail";
 import EditProfile from "../pages/EditProfile";
 import NotFound from "../pages/NotFound";
 import AddRestaurant from "../pages/owner/AddRestaurant";
+import MyRestaurant from "../pages/owner/MyRestaurant";
 import MyRestaurants from "../pages/owner/MyRestaurants";
 
 const clientRoutes = [
@@ -41,6 +42,10 @@ const ownerRoutes = [
   {
     path: "/add-restaurant",
     element: <AddRestaurant />,
+  },
+  {
+    path: "/restaurant/:id",
+    element: <MyRestaurant />,
   },
 ];
 

@@ -20,7 +20,7 @@ const SearchBar = () => {
   return (
     <form
       onSubmit={handleSubmit(onSearchSubmitHandler)}
-      className="flex w-full items-center justify-center bg-gradient-to-tr from-slate-900 to-slate-700 py-40"
+      className="flex w-full items-center justify-center bg-gradient-to-tr from-slate-900 to-slate-700 py-20"
     >
       <input
         {...register("searchTerm", { required: true, min: 3 })}
