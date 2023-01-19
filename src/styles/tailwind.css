@@ -7,6 +7,10 @@
     @apply rounded-md bg-gray-100 py-3 px-5 shadow-inner outline-none transition-all focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50;
   }
 
+  .input-textbox {
+    @apply rounded-md bg-gray-100 py-3 px-5 shadow-inner outline-none transition-all focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50;
+  }
+
   .link {
     @apply text-amber-500 hover:underline;
   }

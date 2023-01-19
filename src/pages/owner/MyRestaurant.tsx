@@ -1,24 +1,30 @@
 import { gql, useQuery } from "@apollo/client";
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { useParams } from "react-router-dom";
-import { RESTAURANT_FRAGMENT } from "../../api/fragments";
+import { useNavigate, useParams, useRouteError } from "react-router-dom";
+import { DISH_FRAGMENT, RESTAURANT_FRAGMENT } from "../../api/fragments";
 import {
   myRestaurant,
   myRestaurantVariables,
 } from "../../api/types/myRestaurant";
 import RestaurantHero from "../../components/RestaurantHero";
+import { Button } from "../../components/UI/Button";
 
-const MY_RESTAURANT_QUERY = gql`
+export const MY_RESTAURANT_QUERY = gql`
   query myRestaurant($myRestaurantInput: MyRestaurantInput!) {
     myRestaurant(input: $myRestaurantInput) {
       ok
       error
       restaurant {
         ...RestaurantParts
+        menu {
+          ...DishParts
+        }
       }
     }
   }
   ${RESTAURANT_FRAGMENT}
+  ${DISH_FRAGMENT}
 `;
 
 const MyRestaurant = () => {
@@ -27,8 +33,15 @@ const MyRestaurant = () => {
     MY_RESTAURANT_QUERY,
     { variables: { myRestaurantInput: { id: +id! } } }
   );
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (data?.myRestaurant.ok === false) {
+      navigate("/");
+    }
+  }, [data?.myRestaurant.ok, navigate]);
+
   const restaurantData = data?.myRestaurant.restaurant;
-  console.log(data);
   return (
     <>
       <Helmet>
@@ -44,6 +57,38 @@ const MyRestaurant = () => {
           isPromoted={restaurantData?.isPromoted}
           name={restaurantData?.name}
         />
+        <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 pt-8">
+          <h2 className="text-3xl font-bold">
+            {data?.myRestaurant.restaurant?.name || `My Restaurant`} Dashboard
+          </h2>
+          <div className="flex flex-col gap-4 sm:flex-row">
+            <Button
+              actionText="Change Restaurant"
+              loading={false}
+              canClick={true}
+            />
+            <Button
+              actionText="Add Dish"
+              loading={false}
+              canClick={true}
+              link={`/restaurant/${id}/add-dish`}
+            />
+            <Button
+              actionText="Buy Promotion"
+              loading={false}
+              canClick={true}
+            />
+          </div>
+          <div className="border-t-2">
+            {restaurantData?.menu.length === 0 ? (
+              <h4 className="py-8 text-center text-xl font-semibold">
+                Your menu has no dishes
+              </h4>
+            ) : (
+              <span></span>
+            )}
+          </div>
+        </div>
       </div>
     </>
   );

@@ -15,7 +15,7 @@ interface IRestaurantsListProps {
 
 const RestaurantsList: React.FC<IRestaurantsListProps> = ({ data }) => {
   return (
-    <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-5 gap-y-10 px-4 sm:grid-cols-2 lg:grid-cols-3">
       {data?.restaurants?.map((restaurant) => (
         <Link key={restaurant.id} to={`/restaurant/${restaurant.id}`}>
           <RestaurantCard
