@@ -1,7 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { useNavigate, useParams, useRouteError } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { DISH_FRAGMENT, RESTAURANT_FRAGMENT } from "../../api/fragments";
 import {
   myRestaurant,
@@ -29,17 +29,17 @@ export const MY_RESTAURANT_QUERY = gql`
 
 const MyRestaurant = () => {
   const { id } = useParams<{ id: string }>();
-  const { data } = useQuery<myRestaurant, myRestaurantVariables>(
+  const { data, error } = useQuery<myRestaurant, myRestaurantVariables>(
     MY_RESTAURANT_QUERY,
     { variables: { myRestaurantInput: { id: +id! } } }
   );
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (data?.myRestaurant.ok === false) {
+    if (error) {
       navigate("/");
     }
-  }, [data?.myRestaurant.ok, navigate]);
+  }, [data?.myRestaurant.ok, navigate, error]);
 
   const restaurantData = data?.myRestaurant.restaurant;
   return (

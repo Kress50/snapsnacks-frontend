@@ -1,5 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
-import { faCircleXmark, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -23,22 +23,23 @@ interface IFormProps {
   name: string;
   price: string;
   description: string;
-  [key: string]: string;
+  file: FileList;
+  [key: string]: any;
 }
 
 const AddDish = () => {
   const { restaurantId } = useParams();
-  const [createDishMutation, { loading }] = useMutation<
-    createDish,
-    createDishVariables
-  >(CREATE_DISH_MUTATION, {
-    refetchQueries: [
-      {
-        query: MY_RESTAURANT_QUERY,
-        variables: { myRestaurantInput: { id: +restaurantId! } },
-      },
-    ],
-  });
+  const [createDishMutation] = useMutation<createDish, createDishVariables>(
+    CREATE_DISH_MUTATION,
+    {
+      refetchQueries: [
+        {
+          query: MY_RESTAURANT_QUERY,
+          variables: { myRestaurantInput: { id: +restaurantId! } },
+        },
+      ],
+    }
+  );
   const {
     register,
     getValues,
@@ -47,17 +48,36 @@ const AddDish = () => {
     setValue,
   } = useForm<IFormProps>({ mode: "onChange" });
   const [genericUploadError, setGenericUploadError] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [fileSizeError, setFileSizeError] = useState(false);
+  const [optionsError, setOptionsError] = useState(false);
   const [optionsNumber, setOptionsNumber] = useState<number[]>([]);
   const navigate = useNavigate();
 
   const onSubmitHandler = async () => {
     try {
+      setUploading(true);
       setGenericUploadError(false);
-      const { name, price, description, ...rest } = getValues();
+      setFileSizeError(false);
+      const { file, name, price, description, ...rest } = getValues();
       const optionsObjects = optionsNumber.map((id) => ({
         name: rest[`${id}-optionName`],
         extra: +rest[`${id}-optionExtra`],
       }));
+      const actualFile = file[0];
+      if (actualFile.size > 1048576) {
+        setFileSizeError(true);
+        setUploading(false);
+        return;
+      }
+      const formBody = new FormData();
+      formBody.append("file", actualFile);
+      const request = await (
+        await fetch("http://localhost:4000/uploads/", {
+          method: "POST",
+          body: formBody,
+        })
+      ).json();
       await createDishMutation({
         variables: {
           createDishInput: {
@@ -66,21 +86,28 @@ const AddDish = () => {
             description,
             restaurantId: +restaurantId!,
             options: optionsObjects,
+            coverImage: request.url,
           },
         },
       });
       navigate(`/restaurant/${restaurantId}`);
     } catch (e) {
+      setUploading(false);
       setGenericUploadError(true);
       console.log(e);
     }
   };
 
   const onAddOptionsHandler = () => {
+    if (optionsNumber.length >= 4) {
+      setOptionsError(true);
+      return;
+    }
     setOptionsNumber((prev) => [Date.now(), ...prev]);
   };
 
   const onDeleteOptionHandler = (optionId: number) => {
+    setOptionsError(false);
     setOptionsNumber((prev) => prev.filter((id) => id !== optionId));
     setValue(`${optionId}-optionName`, "");
     setValue(`${optionId}-optionExtra`, "");
@@ -190,10 +217,34 @@ const AddDish = () => {
                 </div>
               ))}
           </div>
-          <Button actionText="Add Dish" loading={loading} canClick={isValid} />
+          <div className="flex flex-col">
+            <input
+              type="file"
+              {...register("file", {
+                required: "Image is required",
+              })}
+              accept="image/png, image/jpeg"
+              required
+            />
+            {fileSizeError && <FormError errorMessage="File is too large!" />}
+            <p className="pt-4 text-sm text-gray-500">
+              Please attach an image for your dish item with in png or jpg
+              format. File must be smaller than 1MB
+            </p>
+          </div>
+          <Button
+            actionText="Add Dish"
+            loading={uploading}
+            canClick={isValid && !uploading}
+          />
           {genericUploadError && (
             <h4 className="text-center font-semibold text-red-500">
               Something went wrong... Try again.
+            </h4>
+          )}
+          {optionsError && (
+            <h4 className="text-center font-semibold text-red-500">
+              Your dish item can only have a maximum of 4 options.
             </h4>
           )}
         </form>
