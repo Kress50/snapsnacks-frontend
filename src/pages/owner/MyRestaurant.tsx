@@ -10,6 +10,7 @@ import {
 import DishList from "../../components/DishList";
 import RestaurantHero from "../../components/RestaurantHero";
 import { Button } from "../../components/UI/Button";
+import { useMeQuery } from "../../hooks/useMeQuery";
 
 export const MY_RESTAURANT_QUERY = gql`
   query myRestaurant($myRestaurantInput: MyRestaurantInput!) {
@@ -30,6 +31,7 @@ export const MY_RESTAURANT_QUERY = gql`
 
 const MyRestaurant = () => {
   const { id } = useParams<{ id: string }>();
+  const meData = useMeQuery();
   const { data, error } = useQuery<myRestaurant, myRestaurantVariables>(
     MY_RESTAURANT_QUERY,
     { variables: { myRestaurantInput: { id: +id! } } }
@@ -87,7 +89,11 @@ const MyRestaurant = () => {
                 Your menu has no dishes
               </h4>
             ) : (
-              <DishList menu={restaurantData?.menu} />
+              <DishList
+                menu={restaurantData?.menu}
+                role={meData.data?.me.role}
+                restaurantId={id}
+              />
             )}
           </div>
         </div>

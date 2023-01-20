@@ -12,7 +12,7 @@ const DishCard: React.FC<IDishProps> = ({
   coverImage,
 }) => {
   return (
-    <div className="group  flex h-28 w-full select-none justify-between border-2 pr-2 transition-all hover:border-amber-500">
+    <div className="group flex h-28 w-full select-none justify-between border-2 pr-2 shadow-sm transition-all hover:border-amber-500">
       <div
         style={{ backgroundImage: `url(${coverImage})` }}
         className="bg-cover bg-center py-10 px-14"
