@@ -56,6 +56,14 @@ export interface EditAccountInput {
   password?: string | null;
 }
 
+export interface EditRestaurantInput {
+  name?: string | null;
+  coverImage?: string | null;
+  address?: string | null;
+  categoryName?: string | null;
+  restaurantId: number;
+}
+
 export interface LoginAccountInput {
   email: string;
   password: string;

@@ -36,10 +36,10 @@ const MyRestaurant = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (error) {
-      navigate("/");
+    if (data?.myRestaurant.error || error) {
+      navigate("/error");
     }
-  }, [data?.myRestaurant.ok, navigate, error]);
+  }, [data?.myRestaurant.error, navigate, error]);
 
   const restaurantData = data?.myRestaurant.restaurant;
   return (
@@ -63,9 +63,10 @@ const MyRestaurant = () => {
           </h2>
           <div className="flex flex-col gap-4 sm:flex-row">
             <Button
-              actionText="Change Restaurant"
+              actionText="Edit Restaurant"
               loading={false}
               canClick={true}
+              link={`/restaurant/${id}/edit-restaurant`}
             />
             <Button
               actionText="Add Dish"

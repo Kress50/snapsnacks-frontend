@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { createDish, createDishVariables } from "../../api/types/createDish";
 import { Button } from "../../components/UI/Button";
 import { FormError } from "../../components/UI/FormError";
+import { useCheckOwnership } from "../../hooks/useCheckOwnership";
 import { MY_RESTAURANT_QUERY } from "./MyRestaurant";
 
 const CREATE_DISH_MUTATION = gql`
@@ -29,6 +30,9 @@ interface IFormProps {
 
 const AddDish = () => {
   const { restaurantId } = useParams();
+  useCheckOwnership(restaurantId);
+  const navigate = useNavigate();
+
   const [createDishMutation] = useMutation<createDish, createDishVariables>(
     CREATE_DISH_MUTATION,
     {
@@ -52,7 +56,6 @@ const AddDish = () => {
   const [fileSizeError, setFileSizeError] = useState(false);
   const [optionsError, setOptionsError] = useState(false);
   const [optionsNumber, setOptionsNumber] = useState<number[]>([]);
-  const navigate = useNavigate();
 
   const onSubmitHandler = async () => {
     try {
@@ -118,7 +121,7 @@ const AddDish = () => {
       <Helmet>
         <title>Add dish | SnapSnacks</title>
       </Helmet>
-      <div className="flex h-screen flex-col items-center justify-center gap-4 px-4">
+      <div className="flex flex-col items-center justify-center gap-4 px-4 pt-20 lg:h-screen lg:pt-0">
         <h2 className="text-center text-xl font-semibold">Add Dish</h2>
         <form
           className="flex w-full max-w-lg flex-col gap-8"
