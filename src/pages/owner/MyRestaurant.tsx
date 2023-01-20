@@ -7,6 +7,7 @@ import {
   myRestaurant,
   myRestaurantVariables,
 } from "../../api/types/myRestaurant";
+import DishList from "../../components/DishList";
 import RestaurantHero from "../../components/RestaurantHero";
 import { Button } from "../../components/UI/Button";
 
@@ -86,7 +87,7 @@ const MyRestaurant = () => {
                 Your menu has no dishes
               </h4>
             ) : (
-              <span></span>
+              <DishList menu={restaurantData?.menu} />
             )}
           </div>
         </div>
