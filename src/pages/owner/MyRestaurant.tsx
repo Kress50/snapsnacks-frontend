@@ -2,7 +2,15 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
-import { VictoryBar, VictoryLine, VictoryVoronoiContainer } from "victory";
+import {
+  Data,
+  VictoryAxis,
+  VictoryBar,
+  VictoryLabel,
+  VictoryLine,
+  VictoryTheme,
+  VictoryVoronoiContainer,
+} from "victory";
 import { VictoryChart } from "victory-chart";
 import {
   DISH_FRAGMENT,
@@ -143,7 +151,7 @@ const MyRestaurant = () => {
                 canClick={true}
               />
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col md:w-56">
               <button
                 onClick={() => {
                   setConfirmDelete(true);
@@ -198,9 +206,33 @@ const MyRestaurant = () => {
           </div>
           <div className="border-t-2 pb-8">
             <h4 className="pt-2 text-center text-2xl font-semibold">Sales</h4>
-            <div className="mx-auto w-full max-w-lg">
-              <VictoryChart containerComponent={<VictoryVoronoiContainer />}>
-                <VictoryLine />
+            <div className="w-full ">
+              <VictoryChart
+                height={500}
+                domainPadding={50}
+                width={window.innerWidth}
+                theme={VictoryTheme.material}
+                containerComponent={<VictoryVoronoiContainer />}
+              >
+                <VictoryLine
+                  labels={({ datum }) => `$${datum.y}`}
+                  labelComponent={
+                    <VictoryLabel
+                      style={{ fontSize: 20 }}
+                      renderInPortal
+                      dy={-20}
+                    />
+                  }
+                  data={data?.myRestaurant.restaurant?.orders.map((order) => ({
+                    x: order.createdAt,
+                    y: order.total,
+                  }))}
+                  style={{ data: { strokeWidth: 5, stroke: "#f39c0c" } }}
+                />
+                <VictoryAxis
+                  tickFormat={(tick) => new Date(tick).toLocaleDateString()}
+                  style={{ tickLabels: { fontSize: 20 } }}
+                />
               </VictoryChart>
             </div>
           </div>
