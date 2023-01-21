@@ -34,9 +34,11 @@ const DishList: React.FC<IDishListProps> = ({ menu, role, restaurantId }) => {
       ],
     }
   );
-  const onClickDeleteDishHandler = (id: number) => {
+  const onClickDeleteDishHandler = async (id: number) => {
     try {
-      deleteDishMutation({ variables: { deleteDishInput: { dishId: id } } });
+      await deleteDishMutation({
+        variables: { deleteDishInput: { dishId: id } },
+      });
     } catch (e) {
       console.log(e);
     }
