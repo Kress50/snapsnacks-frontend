@@ -18,6 +18,10 @@ import {
   RESTAURANT_FRAGMENT,
 } from "../../api/fragments";
 import {
+  createPayment,
+  createPaymentVariables,
+} from "../../api/types/createPayment";
+import {
   deleteRestaurant,
   deleteRestaurantVariables,
 } from "../../api/types/deleteRestaurant";
@@ -61,6 +65,15 @@ const DELETE_RESTAURANT_MUTATION = gql`
   }
 `;
 
+const CREATE_PAYMENT_MUTATION = gql`
+  mutation createPayment($createPaymentInput: CreatePaymentInput!) {
+    createPayment(input: $createPaymentInput) {
+      ok
+      error
+    }
+  }
+`;
+
 const MyRestaurant = () => {
   const { id } = useParams<{ id: string }>();
   const meData = useMeQuery();
@@ -91,6 +104,25 @@ const MyRestaurant = () => {
       },
     ],
   });
+
+  const onCompletedCreatePayment = (data: createPayment) => {
+    if (data.createPayment.ok) {
+      alert("Your restaurant is now being promoted!");
+    }
+  };
+
+  const [createPaymentMutation] = useMutation<
+    createPayment,
+    createPaymentVariables
+  >(CREATE_PAYMENT_MUTATION, {
+    onCompleted: onCompletedCreatePayment,
+    refetchQueries: [
+      {
+        query: MY_RESTAURANT_QUERY,
+        variables: { myRestaurantInput: { id: +id! } },
+      },
+    ],
+  });
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   useEffect(() => {
@@ -112,12 +144,37 @@ const MyRestaurant = () => {
     }
   };
 
+  const triggerPaddleHandler = () => {
+    if (meData.data?.me.email) {
+      //@ts-ignore
+      window.Paddle.Environment.set("sandbox");
+      //@ts-ignore
+      window.Paddle.Setup({ vendor: 10276 });
+      //@ts-ignore
+      window.Paddle.Checkout.open({
+        product: 43413,
+        email: meData.data?.me.email,
+        successCallback: (data: any) => {
+          createPaymentMutation({
+            variables: {
+              createPaymentInput: {
+                restaurantId: +id!,
+                transactionId: data.checkout.id,
+              },
+            },
+          });
+        },
+      });
+    }
+  };
+
   return (
     <>
       <Helmet>
         <title>
           {data?.myRestaurant.restaurant?.name || `My Restaurant`} | SnapSnacks
         </title>
+        <script src="https://cdn.paddle.com/paddle/paddle.js"></script>
       </Helmet>
       <div className="pt-20">
         <RestaurantHero
@@ -145,11 +202,18 @@ const MyRestaurant = () => {
                 canClick={true}
                 link={`/restaurant/${id}/add-dish`}
               />
-              <Button
-                actionText="Buy Promotion"
-                loading={false}
-                canClick={true}
-              />
+              <span
+                onClick={triggerPaddleHandler}
+                className={`cursor-pointer select-none rounded-md py-3 px-5 text-lg font-semibold text-white shadow-sm outline-none transition-colors ${
+                  !restaurantData?.isPromoted
+                    ? "bg-amber-500 hover:bg-orange-400 focus:bg-orange-400 active:bg-amber-500"
+                    : "pointer-events-none bg-gray-300"
+                }`}
+              >
+                {restaurantData?.isPromoted
+                  ? "Already Promoted!"
+                  : "Buy Promotion"}
+              </span>
             </div>
             <div className="flex flex-col md:w-56">
               <button
