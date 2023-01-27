@@ -65,7 +65,7 @@ const SearchPage = () => {
               </span>
             </h2>
             {data?.searchRestaurant.totalItems !== 0 ? (
-              <RestaurantsList data={data?.searchRestaurant} />
+              <RestaurantsList data={data?.searchRestaurant!} />
             ) : (
               <span className="mt-12 flex justify-center text-3xl font-semibold">
                 No restaurants found

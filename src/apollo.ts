@@ -6,6 +6,7 @@ import {
 } from "@apollo/client";
 import { LOCALSTORAGE_TOKEN } from "./constants";
 import { setContext } from "@apollo/client/link/context";
+import { CreateOrderItemInput } from "./api/types/globalTypes";
 
 const token = localStorage.getItem(LOCALSTORAGE_TOKEN);
 
@@ -13,6 +14,8 @@ const token = localStorage.getItem(LOCALSTORAGE_TOKEN);
 export const isLoggedInVar = makeVar(Boolean(token));
 //?JTW token
 export const authTokenVar = makeVar(token);
+//?Order cart
+export const orderCartVar = makeVar([] as CreateOrderItemInput[]);
 
 //?HTTP
 const httpLink = createHttpLink({
@@ -42,6 +45,11 @@ export const client = new ApolloClient({
           token: {
             read() {
               return authTokenVar();
+            },
+          },
+          orderCart: {
+            read() {
+              return orderCartVar();
             },
           },
         },

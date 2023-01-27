@@ -6,7 +6,7 @@ import { searchRestaurant_searchRestaurant } from "../api/types/searchRestaurant
 import RestaurantCard from "./UI/RestaurantCard";
 
 interface IRestaurantsListProps {
-  data?:
+  data:
     | restaurantsPageQuery_Restaurants
     | searchRestaurant_searchRestaurant
     | category_category
@@ -19,9 +19,10 @@ const RestaurantsList: React.FC<IRestaurantsListProps> = ({ data }) => {
       {data?.restaurants?.map((restaurant) => (
         <Link key={restaurant.id} to={`/restaurant/${restaurant.id}`}>
           <RestaurantCard
-            categoryName={restaurant.category?.name}
+            categoryName={restaurant.category?.name || "Category Name"}
             name={restaurant.name}
             image={restaurant.coverImage}
+            promoted={restaurant.isPromoted}
             id={restaurant.id}
           />
         </Link>

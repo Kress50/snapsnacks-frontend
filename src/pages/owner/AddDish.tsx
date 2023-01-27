@@ -196,8 +196,14 @@ const AddDish = () => {
                   className="mt-2 flex flex-col items-start justify-start gap-2 sm:flex-row sm:items-center sm:gap-1"
                 >
                   <input
-                    {...register(`${id}-optionName`)}
+                    {...register(`${id}-optionName`, {
+                      maxLength: {
+                        message: "",
+                        value: 12,
+                      },
+                    })}
                     required
+                    maxLength={12}
                     type="text"
                     className="input"
                     placeholder="Option name"

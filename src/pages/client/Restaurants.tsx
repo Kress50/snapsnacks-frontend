@@ -56,8 +56,8 @@ const Restaurants = () => {
         <SearchBar />
         {!loading && (
           <div className="mx-4 mb-16 sm:mx-16">
-            <CategoryList data={data?.allCategories} />
-            <RestaurantsList data={data?.Restaurants} />
+            <CategoryList data={data?.allCategories!} />
+            <RestaurantsList data={data?.Restaurants!} />
           </div>
         )}
       </div>

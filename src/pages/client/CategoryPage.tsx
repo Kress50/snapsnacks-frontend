@@ -59,9 +59,9 @@ const CategoryPage = () => {
         <SearchBar />
         {!loading && (
           <div className="mx-4 mb-16 sm:mx-16">
-            <CategoryList data={data?.allCategories} />
+            <CategoryList data={data?.allCategories!} />
             {data?.category.totalItems !== 0 ? (
-              <RestaurantsList data={data?.category} />
+              <RestaurantsList data={data?.category!} />
             ) : (
               <span className="mt-12 flex justify-center text-3xl font-semibold">
                 No restaurants found

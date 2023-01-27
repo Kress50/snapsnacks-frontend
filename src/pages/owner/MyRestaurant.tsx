@@ -3,9 +3,7 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  Data,
   VictoryAxis,
-  VictoryBar,
   VictoryLabel,
   VictoryLine,
   VictoryTheme,
@@ -178,11 +176,11 @@ const MyRestaurant = () => {
       </Helmet>
       <div className="pt-20">
         <RestaurantHero
-          address={restaurantData?.address}
-          categoryName={restaurantData?.category?.name}
-          coverImage={restaurantData?.coverImage}
-          isPromoted={restaurantData?.isPromoted}
-          name={restaurantData?.name}
+          address={restaurantData?.address!}
+          categoryName={restaurantData?.category?.name!}
+          coverImage={restaurantData?.coverImage!}
+          isPromoted={restaurantData?.isPromoted!}
+          name={restaurantData?.name!}
         />
         <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 pt-8">
           <h2 className="text-3xl font-bold">
@@ -262,9 +260,9 @@ const MyRestaurant = () => {
               </h4>
             ) : (
               <DishList
-                menu={restaurantData?.menu}
-                role={meData.data?.me.role}
-                restaurantId={id}
+                menu={restaurantData?.menu!}
+                role={meData.data?.me.role!}
+                restaurantId={id!}
               />
             )}
           </div>

@@ -1,11 +1,11 @@
 import React from "react";
 
 interface IRestaurantHeroProps {
-  coverImage?: string;
-  isPromoted?: boolean;
-  name?: string;
-  categoryName?: string;
-  address?: string;
+  coverImage: string;
+  isPromoted: boolean;
+  name: string;
+  categoryName: string;
+  address: string;
 }
 
 const RestaurantHero: React.FC<IRestaurantHeroProps> = ({

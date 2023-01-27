@@ -3,7 +3,7 @@ import { restaurantsPageQuery_allCategories } from "../api/types/restaurantsPage
 import Category from "./UI/Category";
 
 interface ICategoryListProps {
-  data?: restaurantsPageQuery_allCategories;
+  data: restaurantsPageQuery_allCategories;
 }
 
 const CategoryList: React.FC<ICategoryListProps> = ({ data }) => {

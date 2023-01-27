@@ -8,9 +8,11 @@ import { MY_RESTAURANT_QUERY } from "../pages/owner/MyRestaurant";
 import DishCard from "./UI/DishCard";
 
 interface IDishListProps {
-  menu?: myRestaurant_myRestaurant_restaurant_menu[];
-  role?: UserRole;
-  restaurantId?: string;
+  menu: myRestaurant_myRestaurant_restaurant_menu[];
+  role: UserRole;
+  restaurantId: string;
+  readyToCheckout?: boolean;
+  orderItemsHandler?: any;
 }
 
 const DELETE_DISH_MUTATION = gql`
@@ -22,7 +24,13 @@ const DELETE_DISH_MUTATION = gql`
   }
 `;
 
-const DishList: React.FC<IDishListProps> = ({ menu, role, restaurantId }) => {
+const DishList: React.FC<IDishListProps> = ({
+  menu,
+  role,
+  restaurantId,
+  readyToCheckout,
+  orderItemsHandler,
+}) => {
   const [deleteDishMutation] = useMutation<deleteDish, deleteDishVariables>(
     DELETE_DISH_MUTATION,
     {
@@ -45,7 +53,11 @@ const DishList: React.FC<IDishListProps> = ({ menu, role, restaurantId }) => {
   };
 
   return (
-    <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-4 gap-y-5 pb-10 pt-10 sm:grid-cols-2 lg:grid-cols-3">
+    <div
+      className={`mx-auto grid max-w-7xl grid-cols-1 gap-x-4 gap-y-5 pb-10 pt-10 sm:grid-cols-2 lg:grid-cols-3 ${
+        readyToCheckout && "hidden"
+      }`}
+    >
       {menu?.map((dish) => (
         <div key={dish.id} className="group">
           {role === "Owner" && (
@@ -62,6 +74,9 @@ const DishList: React.FC<IDishListProps> = ({ menu, role, restaurantId }) => {
             name={dish.name!}
             description={dish.description!}
             price={dish.price!}
+            role={role}
+            options={dish.options}
+            id={dish.id}
           />
         </div>
       ))}
