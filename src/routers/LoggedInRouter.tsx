@@ -11,6 +11,7 @@ import SearchPage from "../pages/client/SearchPage";
 import ConfirmEmail from "../pages/ConfirmEmail";
 import EditProfile from "../pages/EditProfile";
 import NotFound from "../pages/NotFound";
+import Order from "../pages/Order";
 import AddDish from "../pages/owner/AddDish";
 import AddRestaurant from "../pages/owner/AddRestaurant";
 import EditRestaurant from "../pages/owner/EditRestaurant";
@@ -95,6 +96,7 @@ export default function LoggedInRouter() {
               />
             ))}
           <Route path="/edit-profile" element={<EditProfile />} />,
+          <Route path="/orders/:id" element={<Order />} />
         </Route>
         <Route path="/confirm/*" element={<ConfirmEmail />} />
         <Route path="*" element={<NotFound />} />

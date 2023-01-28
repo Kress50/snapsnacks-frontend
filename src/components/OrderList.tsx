@@ -94,7 +94,7 @@ const OrderList: React.FC<IOrderListProps> = ({
     try {
       setGenericError(false);
       setUploading(true);
-      createOrderMutation({
+      await createOrderMutation({
         variables: {
           createOrderInput: {
             restaurantId: +restaurantId,
