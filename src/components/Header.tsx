@@ -29,7 +29,7 @@ const Header = () => {
         >
           <FontAwesomeIcon
             icon={faUser}
-            className="cursor-pointer p-4 text-xl hover:text-amber-500  active:text-orange-500"
+            className="cursor-pointer p-4 text-xl text-slate-800 hover:text-amber-500  active:text-orange-500"
           />
         </Link>
       </header>
