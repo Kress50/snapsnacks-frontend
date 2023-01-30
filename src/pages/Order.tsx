@@ -1,11 +1,16 @@
-import { gql, useQuery, useSubscription } from "@apollo/client";
-import { useEffect } from "react";
+import { gql, useMutation, useQuery } from "@apollo/client";
+import { param } from "cypress/types/jquery";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
+import { CommonProps } from "victory";
 import { FULL_ORDER_FRAGMENT } from "../api/fragments";
+import { editOrder, editOrderVariables } from "../api/types/editOrder";
 import { getOrder, getOrderVariables } from "../api/types/getOrder";
-import { orderUpdates, orderUpdatesVariables } from "../api/types/orderUpdates";
+import { OrderStatus, UserRole } from "../api/types/globalTypes";
+import { orderUpdates } from "../api/types/orderUpdates";
 import { Button } from "../components/UI/Button";
+import { useMeQuery } from "../hooks/useMeQuery";
 
 const GET_ORDER = gql`
   query getOrder($getOrderInput: GetOrderInput!) {
@@ -29,8 +34,22 @@ const ORDER_SUBSCRIPTION = gql`
   ${FULL_ORDER_FRAGMENT}
 `;
 
+const EDIT_ORDER_MUTATION = gql`
+  mutation editOrder($editOrderInput: EditOrderInput!) {
+    editOrder(input: $editOrderInput) {
+      ok
+      error
+    }
+  }
+`;
+
 const Order = () => {
   const params = useParams();
+  const [genericError, setGenericError] = useState(false);
+  const { data: userData } = useMeQuery();
+  const [editOrderMutation] = useMutation<editOrder, editOrderVariables>(
+    EDIT_ORDER_MUTATION
+  );
   const { data, error, subscribeToMore } = useQuery<
     getOrder,
     getOrderVariables
@@ -71,6 +90,18 @@ const Order = () => {
     }
   }, [error, navigate, data, params.id, subscribeToMore]);
 
+  const changeOrderStatusHandler = async (newStatus: OrderStatus) => {
+    try {
+      setGenericError(false);
+      await editOrderMutation({
+        variables: { editOrderInput: { id: +params.id!, status: newStatus } },
+      });
+    } catch (e) {
+      setGenericError(true);
+      console.log(e);
+    }
+  };
+
   return (
     <>
       {(error || data?.getOrder.error) && (
@@ -101,7 +132,7 @@ const Order = () => {
           <title>Order #{params.id} | SnapSnacks</title>
         </Helmet>
         <div className="flex h-screen items-center justify-center">
-          <div className="w-full max-w-sm border-2 border-slate-800">
+          <div className="w-full max-w-sm rounded-lg border-2 border-slate-800">
             <h4 className="w-full bg-slate-800 py-5 text-center text-xl text-white">
               Order #{params.id}
             </h4>
@@ -122,15 +153,52 @@ const Order = () => {
                 {data?.getOrder.order?.driver?.email || "Not assigned"}
               </span>
             </div>
-            <h6
-              className={`mx-5 border-t-2 py-10 text-center text-xl font-semibold ${
-                data?.getOrder.order?.status === "Delivered"
-                  ? "border-green-500 text-green-500"
-                  : "border-amber-500 text-amber-500"
-              }`}
-            >
-              Status: {data?.getOrder.order?.status}
-            </h6>
+            {userData?.me.role === UserRole.Client && (
+              <h6
+                className={`mx-5 border-t-2 py-10 text-center text-xl font-semibold ${
+                  data?.getOrder.order?.status === "Delivered"
+                    ? "border-green-500 text-green-500"
+                    : "border-amber-500 text-amber-500"
+                }`}
+              >
+                Status: {data?.getOrder.order?.status}
+              </h6>
+            )}
+            {userData?.me.role === UserRole.Owner && (
+              <div className="mx-5 flex flex-col justify-center border-t-2 py-7">
+                {data?.getOrder.order?.status === OrderStatus.Pending && (
+                  <button
+                    onClick={() => {
+                      changeOrderStatusHandler(OrderStatus.Cooking);
+                    }}
+                    className="select-none rounded-md bg-amber-500 py-3 px-5 text-lg font-semibold text-white shadow-sm outline-none transition-colors hover:bg-orange-400 active:scale-95"
+                  >
+                    Accept Order
+                  </button>
+                )}
+                {data?.getOrder.order?.status === OrderStatus.Cooking && (
+                  <button
+                    onClick={() => {
+                      changeOrderStatusHandler(OrderStatus.Waiting);
+                    }}
+                    className="select-none rounded-md bg-amber-500 py-3 px-5 text-lg font-semibold text-white shadow-sm outline-none transition-colors hover:bg-orange-400 active:scale-95"
+                  >
+                    Waiting for Delivery
+                  </button>
+                )}
+                {data?.getOrder.order?.status !==
+                  (OrderStatus.Pending || OrderStatus.Cooking) && (
+                  <h6 className="text-center text-xl font-semibold text-amber-500">
+                    Status: {data?.getOrder.order?.status}
+                  </h6>
+                )}
+                {genericError && (
+                  <span className="pt-1 text-center text-red-500">
+                    Something went wrong! Try again!
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </>

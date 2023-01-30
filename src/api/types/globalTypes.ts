@@ -87,6 +87,11 @@ export interface EditAccountInput {
   password?: string | null;
 }
 
+export interface EditOrderInput {
+  id: number;
+  status: OrderStatus;
+}
+
 export interface EditRestaurantInput {
   name?: string | null;
   coverImage?: string | null;
