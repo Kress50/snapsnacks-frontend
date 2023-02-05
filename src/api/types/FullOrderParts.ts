@@ -22,6 +22,7 @@ export interface FullOrderParts_driver {
 export interface FullOrderParts_restaurant {
   __typename: "Restaurant";
   name: string;
+  address: string;
 }
 
 export interface FullOrderParts {

@@ -1,7 +1,7 @@
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useMeQuery } from "../hooks/useMeQuery";
 import { Logo } from "./UI/Logo";
 
@@ -34,12 +34,8 @@ const Header = () => {
           onMouseLeave={() => setBarsHover(false)}
           className="relative"
         >
-          <FontAwesomeIcon
-            icon={faBars}
-            className="cursor-pointer p-4 text-xl text-slate-800 hover:text-amber-500  active:text-orange-500"
-          />
-          {barsHover && (
-            <div className="absolute right-2 flex cursor-pointer select-none flex-col gap-2 rounded-md border-2 border-amber-500 bg-white p-5 text-center shadow-lg">
+          {data?.me.role === "Delivery" && (
+            <div className="flex items-center justify-end gap-4">
               <Link
                 to="/edit-profile"
                 className="p-1 px-2 hover:text-amber-500 active:text-amber-500"
@@ -48,11 +44,35 @@ const Header = () => {
               </Link>
               <span
                 onClick={logoutHandler}
-                className="border-t p-1 px-2 pt-2 hover:text-amber-500 active:text-amber-500"
+                className="cursor-pointer p-1 px-2 hover:text-amber-500 active:text-amber-500"
               >
                 Logout
               </span>
             </div>
+          )}
+          {data?.me.role !== "Delivery" && (
+            <>
+              <FontAwesomeIcon
+                icon={faBars}
+                className="cursor-pointer p-4 text-xl text-slate-800 hover:text-amber-500  active:text-orange-500"
+              />
+              {barsHover && (
+                <div className="absolute right-2 flex cursor-pointer select-none flex-col gap-2 rounded-md border-2 border-amber-500 bg-white p-5 text-center shadow-lg">
+                  <Link
+                    to="/edit-profile"
+                    className="p-1 px-2 hover:text-amber-500 active:text-amber-500"
+                  >
+                    Profile
+                  </Link>
+                  <span
+                    onClick={logoutHandler}
+                    className="border-t p-1 px-2 pt-2 hover:text-amber-500 active:text-amber-500"
+                  >
+                    Logout
+                  </span>
+                </div>
+              )}
+            </>
           )}
         </div>
       </header>

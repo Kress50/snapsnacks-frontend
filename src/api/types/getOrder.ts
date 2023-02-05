@@ -22,6 +22,7 @@ export interface getOrder_getOrder_order_driver {
 export interface getOrder_getOrder_order_restaurant {
   __typename: "Restaurant";
   name: string;
+  address: string;
 }
 
 export interface getOrder_getOrder_order {

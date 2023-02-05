@@ -1,9 +1,7 @@
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { param } from "cypress/types/jquery";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
-import { CommonProps } from "victory";
 import { FULL_ORDER_FRAGMENT } from "../api/fragments";
 import { editOrder, editOrderVariables } from "../api/types/editOrder";
 import { getOrder, getOrderVariables } from "../api/types/getOrder";

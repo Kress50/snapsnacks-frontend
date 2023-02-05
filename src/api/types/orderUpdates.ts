@@ -22,6 +22,7 @@ export interface orderUpdates_orderUpdates_driver {
 export interface orderUpdates_orderUpdates_restaurant {
   __typename: "Restaurant";
   name: string;
+  address: string;
 }
 
 export interface orderUpdates_orderUpdates {

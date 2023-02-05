@@ -9,6 +9,7 @@ import Restaurant from "../pages/client/Restaurant";
 import Restaurants from "../pages/client/Restaurants";
 import SearchPage from "../pages/client/SearchPage";
 import ConfirmEmail from "../pages/ConfirmEmail";
+import Dashboard from "../pages/driver/Dashboard";
 import EditProfile from "../pages/EditProfile";
 import NotFound from "../pages/NotFound";
 import Order from "../pages/Order";
@@ -60,6 +61,13 @@ const ownerRoutes = [
   },
 ];
 
+const driverRoutes = [
+  {
+    path: "/",
+    element: <Dashboard />,
+  },
+];
+
 export default function LoggedInRouter() {
   const { data, loading, error } = useMeQuery();
 
@@ -89,6 +97,14 @@ export default function LoggedInRouter() {
             ))}
           {data.me.role === UserRole.Owner &&
             ownerRoutes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={route.element}
+              />
+            ))}
+          {data.me.role === UserRole.Delivery &&
+            driverRoutes.map((route) => (
               <Route
                 key={route.path}
                 path={route.path}

@@ -30,8 +30,16 @@ const httpLink = createHttpLink({
 const wsLink = new WebSocketLink(
   new SubscriptionClient("ws://localhost:4000/graphql", {
     reconnect: true,
+    lazy: true,
+    timeout: 300000,
+    inactivityTimeout: 300000,
     connectionParams: {
       "x-jwt": authTokenVar() || "",
+    },
+    connectionCallback: (error) => {
+      if (error) {
+        console.error("WS CONNECTION_CB ERROR::: ", error);
+      }
     },
   })
 );
