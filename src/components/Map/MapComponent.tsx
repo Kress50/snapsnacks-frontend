@@ -1,12 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { useMap, Marker, useMapEvents } from "react-leaflet";
+import { useMap, Marker } from "react-leaflet";
 import "leaflet-routing-machine";
 import * as L from "leaflet";
 import "./MapComponent.css";
 import "leaflet-control-geocoder";
-import { useSubscription } from "@apollo/client";
 import { cookedOrders } from "../../api/types/cookedOrders";
-import { COOKED_ORDERS_SUBSCRIPTION } from "../../pages/driver/Dashboard";
 
 export interface ICoordsState {
   latitude: number;
@@ -81,7 +80,6 @@ const MapComponent: React.FC<IMapComponentProps> = ({ cookedOrdersData }) => {
 
   useEffect(() => {
     if (!cookedOrdersData?.cookedOrders) {
-      console.log("no data");
       return;
     }
     console.log("initializing");

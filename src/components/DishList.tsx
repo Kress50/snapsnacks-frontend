@@ -60,7 +60,7 @@ const DishList: React.FC<IDishListProps> = ({
     >
       {menu?.map((dish) => (
         <div key={dish.id} className="group">
-          {role === "Owner" && (
+          {role === UserRole.Owner && (
             <FontAwesomeIcon
               icon={faTrashAlt}
               onClick={() => {

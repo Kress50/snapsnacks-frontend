@@ -8,6 +8,9 @@ export const ME_QUERY = gql`
       email
       role
       verified
+      verification {
+        code
+      }
     }
   }
 `;

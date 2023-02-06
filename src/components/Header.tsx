@@ -2,12 +2,14 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { UserRole } from "../api/types/globalTypes";
 import { useMeQuery } from "../hooks/useMeQuery";
 import { Logo } from "./UI/Logo";
 
 const Header = () => {
   const { data } = useMeQuery();
   const [barsHover, setBarsHover] = useState(false);
+  console.log(data);
 
   const logoutHandler = () => {
     localStorage.removeItem("token");
@@ -18,7 +20,12 @@ const Header = () => {
     <>
       {!data?.me.verified && (
         <div className="fixed z-50 flex w-full -translate-y-7 select-none justify-center bg-amber-500 py-1 text-white transition-transform hover:translate-y-0">
-          <span className="font-bold">Please verify your email</span>
+          <Link
+            to={`/confirm/code=${data?.me.verification?.code}`}
+            className="font-bold"
+          >
+            Please verify your email
+          </Link>
         </div>
       )}
       <header className="fixed z-10 mx-auto flex w-full items-center justify-between bg-white px-4 py-2 xl:px-80">
@@ -34,7 +41,7 @@ const Header = () => {
           onMouseLeave={() => setBarsHover(false)}
           className="relative"
         >
-          {data?.me.role === "Delivery" && (
+          {data?.me.role === UserRole.Delivery && (
             <div className="flex items-center justify-end gap-4">
               <Link
                 to="/edit-profile"
@@ -50,7 +57,7 @@ const Header = () => {
               </span>
             </div>
           )}
-          {data?.me.role !== "Delivery" && (
+          {data?.me.role !== UserRole.Delivery && (
             <>
               <FontAwesomeIcon
                 icon={faBars}

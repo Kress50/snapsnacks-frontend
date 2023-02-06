@@ -186,7 +186,54 @@ const Order = () => {
                 )}
                 {data?.getOrder.order?.status !==
                   (OrderStatus.Pending || OrderStatus.Cooking) && (
-                  <h6 className="text-center text-xl font-semibold text-amber-500">
+                  <h6
+                    className={`pt-2 text-center text-xl font-semibold ${
+                      data?.getOrder.order?.status === OrderStatus.Delivered
+                        ? "text-green-500"
+                        : "text-amber-500"
+                    }`}
+                  >
+                    Status: {data?.getOrder.order?.status}
+                  </h6>
+                )}
+                {genericError && (
+                  <span className="pt-1 text-center text-red-500">
+                    Something went wrong! Try again!
+                  </span>
+                )}
+              </div>
+            )}
+            {userData?.me.role === UserRole.Delivery && (
+              <div className="mx-5 flex flex-col justify-center border-t-2 py-7">
+                {data?.getOrder.order?.status === OrderStatus.Waiting && (
+                  <button
+                    onClick={() => {
+                      changeOrderStatusHandler(OrderStatus.PickedUp);
+                    }}
+                    className="select-none rounded-md bg-amber-500 py-3 px-5 text-lg font-semibold text-white shadow-sm outline-none transition-colors hover:bg-orange-400 active:scale-95"
+                  >
+                    Pick up Order
+                  </button>
+                )}
+                {data?.getOrder.order?.status === OrderStatus.PickedUp && (
+                  <button
+                    onClick={() => {
+                      changeOrderStatusHandler(OrderStatus.Delivered);
+                    }}
+                    className="select-none rounded-md bg-green-500 py-3 px-5 text-lg font-semibold text-white shadow-sm outline-none transition-colors hover:bg-green-400 active:scale-95"
+                  >
+                    Delivery Finished
+                  </button>
+                )}
+                {data?.getOrder.order?.status !==
+                  (OrderStatus.Pending || OrderStatus.Cooking) && (
+                  <h6
+                    className={`pt-2 text-center text-xl font-semibold ${
+                      data?.getOrder.order?.status === OrderStatus.Delivered
+                        ? "text-green-500"
+                        : "text-amber-500"
+                    }`}
+                  >
                     Status: {data?.getOrder.order?.status}
                   </h6>
                 )}

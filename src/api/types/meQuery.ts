@@ -9,12 +9,18 @@ import { UserRole } from "./globalTypes";
 // GraphQL query operation: meQuery
 // ====================================================
 
+export interface meQuery_me_verification {
+  __typename: "Verification";
+  code: string;
+}
+
 export interface meQuery_me {
   __typename: "User";
   id: number;
   email: string;
   role: UserRole;
   verified: boolean;
+  verification: meQuery_me_verification | null;
 }
 
 export interface meQuery {

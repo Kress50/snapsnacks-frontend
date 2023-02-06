@@ -1,12 +1,14 @@
-import { gql, useSubscription } from "@apollo/client";
+import { gql, useMutation, useSubscription } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
 import { MapContainer, TileLayer } from "react-leaflet";
 import MapComponent from "../../components/Map/MapComponent";
 import { FULL_ORDER_FRAGMENT } from "../../api/fragments";
 import { cookedOrders } from "../../api/types/cookedOrders";
+import { takeOrder, takeOrderVariables } from "../../api/types/takeOrder";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-export const COOKED_ORDERS_SUBSCRIPTION = gql`
+const COOKED_ORDERS_SUBSCRIPTION = gql`
   subscription cookedOrders {
     cookedOrders {
       ...FullOrderParts
@@ -15,13 +17,48 @@ export const COOKED_ORDERS_SUBSCRIPTION = gql`
   ${FULL_ORDER_FRAGMENT}
 `;
 
-const Dashboard = () => {
-  const { data } = useSubscription<cookedOrders>(COOKED_ORDERS_SUBSCRIPTION);
+const TAKE_ORDER_MUTATION = gql`
+  mutation takeOrder($takeOrderInput: TakeOrderInput!) {
+    takeOrder(input: $takeOrderInput) {
+      ok
+      error
+    }
+  }
+`;
 
+const Dashboard = () => {
   const navigate = useNavigate();
 
-  const acceptOrderHandler = () => {
-    navigate(`/${data?.cookedOrders.id}`);
+  const onCompleted = (takeOrderData: takeOrder) => {
+    if (takeOrderData.takeOrder.ok) {
+      setGenericUploadError(false);
+      navigate(`/orders/${data?.cookedOrders.id}`);
+    }
+    if (takeOrderData.takeOrder.error) {
+      console.log(takeOrderData.takeOrder.error);
+      setGenericUploadError(true);
+    }
+  };
+
+  const { data } = useSubscription<cookedOrders>(COOKED_ORDERS_SUBSCRIPTION);
+  const [genericUploadError, setGenericUploadError] = useState(false);
+  const [takeOrderMutation] = useMutation<takeOrder, takeOrderVariables>(
+    TAKE_ORDER_MUTATION,
+    { onCompleted }
+  );
+
+  const acceptOrderHandler = async () => {
+    try {
+      setGenericUploadError(false);
+      if (data?.cookedOrders.id) {
+        await takeOrderMutation({
+          variables: { takeOrderInput: { id: data.cookedOrders.id } },
+        });
+      }
+    } catch (e) {
+      console.log(e);
+      setGenericUploadError(true);
+    }
   };
 
   return (
@@ -81,6 +118,11 @@ const Dashboard = () => {
             </>
           )}
         </div>
+        {genericUploadError && (
+          <h4 className="pt-2 text-center font-semibold text-red-500">
+            Something went wrong... Try again.
+          </h4>
+        )}
       </div>
     </>
   );

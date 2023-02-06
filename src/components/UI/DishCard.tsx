@@ -36,7 +36,7 @@ const DishCard: React.FC<IDishProps> = ({
   );
 
   const handleAddToOrderCounter = () => {
-    if (role !== "Client") return;
+    if (role !== UserRole.Client) return;
     orderCartVar([
       ...orderCartVar(),
       { dishId: id, options: selectedOptions },
@@ -45,7 +45,7 @@ const DishCard: React.FC<IDishProps> = ({
   };
 
   const handleSelectedOptions = (optionName: string) => {
-    if (role !== "Client") return;
+    if (role !== UserRole.Client) return;
     setSelectedOptions((prev) => [...prev, { name: optionName }]);
   };
 
@@ -53,7 +53,7 @@ const DishCard: React.FC<IDishProps> = ({
     <div className="group flex w-full flex-col">
       <div className="z-10 flex h-52 w-full select-none flex-col justify-between border-2 bg-white pr-2 shadow-sm transition-all group-hover:border-amber-500">
         <div className="flex h-28 w-full justify-between">
-          {role === "Client" && counter !== 0 && (
+          {role === UserRole.Client && counter !== 0 && (
             <div className="absolute z-10 flex h-7 w-7 items-center justify-center rounded-br-xl bg-amber-500 font-semibold text-white transition-all">
               {counter}
             </div>
@@ -95,7 +95,7 @@ const DishCard: React.FC<IDishProps> = ({
           ))}
         </div>
       </div>
-      {role === "Client" && (
+      {role === UserRole.Client && (
         <FontAwesomeIcon
           icon={faCartShopping}
           onClick={() => handleAddToOrderCounter()}
