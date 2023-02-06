@@ -161,6 +161,20 @@ const MyRestaurant = () => {
     }
   };
 
+  let totalSales = 0;
+  data?.myRestaurant.restaurant?.orders.map((order) => {
+    if (order.total) {
+      totalSales += order.total;
+    }
+  });
+
+  let lastTwentySales = 0;
+  data?.myRestaurant.restaurant?.orders.slice(0, 20).map((order) => {
+    if (order.total) {
+      lastTwentySales = lastTwentySales + order.total;
+    }
+  });
+
   const triggerPaddleHandler = () => {
     if (meData.data?.me.email) {
       //@ts-ignore
@@ -304,10 +318,12 @@ const MyRestaurant = () => {
                       dy={-20}
                     />
                   }
-                  data={data?.myRestaurant.restaurant?.orders.map((order) => ({
-                    x: order.createdAt,
-                    y: order.total,
-                  }))}
+                  data={data?.myRestaurant.restaurant?.orders
+                    .slice(0, 20)
+                    .map((order) => ({
+                      x: order.createdAt,
+                      y: order.total,
+                    }))}
                   style={{ data: { strokeWidth: 5, stroke: "#f39c0c" } }}
                 />
                 <VictoryAxis
@@ -316,11 +332,14 @@ const MyRestaurant = () => {
                 />
               </VictoryChart>
             </div>
+            <div className="flex justify-around pt-2 text-xl">
+              <span>Total sales: ${totalSales}</span>
+              <span>Last 20 sales: ${lastTwentySales}</span>
+            </div>
           </div>
         </div>
       </div>
     </>
   );
 };
-
 export default MyRestaurant;
