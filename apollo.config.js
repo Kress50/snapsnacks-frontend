@@ -4,7 +4,10 @@ module.exports = {
     tagName: "gql",
     service: {
       name: "snapsnacks-backend",
-      url: "http://localhost:4000/graphql",
+      url:
+        process.env.NODE_ENV === "production"
+          ? "https://snapsnacks.onrender.com/graphql"
+          : "http://localhost:4000/graphql",
     },
   },
 };

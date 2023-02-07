@@ -38,9 +38,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "tailwind:build": "tailwindcss -o src/styles/build.css --minify",
+    "tailwind:build": "npx tailwindcss -o src/styles/build.css --minify",
     "apollo:types": "rimraf src/api/types && apollo client:codegen src/api/types --target=typescript --outputFlat",
     "start": "react-scripts start",
+    "prebuild": "npm run tailwind:build",
     "build": "npm run apollo:types & tailwind:build & react-scripts build",
     "test": "react-scripts test",
     "test:cov": "npm test -- --coverage --watchAll=false",

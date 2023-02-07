@@ -23,25 +23,33 @@ export const orderCartVar = makeVar([] as CreateOrderItemInput[]);
 
 //?HTTP
 const httpLink = createHttpLink({
-  uri: "http://localhost:4000/graphql",
+  uri:
+    process.env.NODE_ENV === "production"
+      ? "https://snapsnacks.onrender.com/graphql"
+      : "http://localhost:4000/graphql",
 });
 
 //?WebSocket
 const wsLink = new WebSocketLink(
-  new SubscriptionClient("ws://localhost:4000/graphql", {
-    reconnect: true,
-    lazy: true,
-    timeout: 300000,
-    inactivityTimeout: 300000,
-    connectionParams: {
-      "x-jwt": authTokenVar() || "",
-    },
-    connectionCallback: (error) => {
-      if (error) {
-        console.error("WS CONNECTION_CB ERROR::: ", error);
-      }
-    },
-  })
+  new SubscriptionClient(
+    process.env.NODE_ENV === "production"
+      ? "wss://snapsnacks.onrender.com/graphql"
+      : "ws://localhost:4000/graphql",
+    {
+      reconnect: true,
+      lazy: true,
+      timeout: 300000,
+      inactivityTimeout: 300000,
+      connectionParams: {
+        "x-jwt": authTokenVar() || "",
+      },
+      connectionCallback: (error) => {
+        if (error) {
+          console.error("WS CONNECTION_CB ERROR::: ", error);
+        }
+      },
+    }
+  )
 );
 
 const authLink = setContext((_, { headers }) => {
