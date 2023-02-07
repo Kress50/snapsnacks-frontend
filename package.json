@@ -42,7 +42,7 @@
     "apollo:types": "rimraf src/api/types && apollo client:codegen src/api/types --target=typescript --outputFlat",
     "start": "react-scripts start",
     "prebuild": "npm run tailwind:build",
-    "build": "npm run tailwind:build && react-scripts build",
+    "build": "npm run tailwind:build && apollo:types && react-scripts build",
     "test": "react-scripts test",
     "test:cov": "npm test -- --coverage --watchAll=false",
     "eject": "react-scripts eject"
