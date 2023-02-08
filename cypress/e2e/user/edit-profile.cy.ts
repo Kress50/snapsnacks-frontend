@@ -14,9 +14,7 @@ describe("Edit Profile", () => {
   });
   it("should change email", () => {
     cy.intercept("POST", "http://localhost:4000/graphql", (req) => {
-      console.log(req);
       if (req.body?.operationName === "EditAccountMutation") {
-        console.log("hi");
         //@ts-ignore
         req.body?.variables?.editAccountInput?.email = "test@email.com";
       }

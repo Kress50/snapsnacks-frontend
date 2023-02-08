@@ -82,7 +82,6 @@ const MapComponent: React.FC<IMapComponentProps> = ({ cookedOrdersData }) => {
     if (!cookedOrdersData?.cookedOrders) {
       return;
     }
-    console.log("initializing");
     // It is there, no types
     // @ts-ignore
     L.Routing.control({

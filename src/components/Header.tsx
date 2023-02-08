@@ -9,7 +9,6 @@ import { Logo } from "./UI/Logo";
 const Header = () => {
   const { data } = useMeQuery();
   const [barsHover, setBarsHover] = useState(false);
-  console.log(data);
 
   const logoutHandler = () => {
     localStorage.removeItem("token");
