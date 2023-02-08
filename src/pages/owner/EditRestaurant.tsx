@@ -96,8 +96,7 @@ const EditRestaurant = () => {
         const formBody = new FormData();
         formBody.append("file", actualFile);
         request = await(
-          //@ts-ignore
-          await fetch(process.env.UPLOADS, {
+          await fetch(`${process.env.UPLOADS}`, {
             method: "POST",
             body: formBody,
           })

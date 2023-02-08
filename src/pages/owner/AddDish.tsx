@@ -75,9 +75,8 @@ const AddDish = () => {
       }
       const formBody = new FormData();
       formBody.append("file", actualFile);
-      const request = await (
-        //@ts-ignore
-        await fetch(process.env.UPLOADS, {
+      const request = await(
+        await fetch(`${process.env.UPLOADS}`, {
           method: "POST",
           body: formBody,
         })
