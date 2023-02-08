@@ -75,8 +75,8 @@ const AddDish = () => {
       }
       const formBody = new FormData();
       formBody.append("file", actualFile);
-      const request = await(
-        await fetch(`${process.env.UPLOADS}`, {
+      const request = await (
+        await fetch("https://snapsnacks.onrender.com/uploads", {
           method: "POST",
           body: formBody,
         })

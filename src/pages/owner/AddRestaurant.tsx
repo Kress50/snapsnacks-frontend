@@ -83,6 +83,7 @@ const AddRestaurant = () => {
   const onSubmitHandler = async () => {
     try {
       setUploading(true);
+      setCompleted(false);
       setGenericUploadError(false);
       setFileSizeError(false);
       const { file, name, address, categoryName } = getValues();
@@ -95,7 +96,7 @@ const AddRestaurant = () => {
       const formBody = new FormData();
       formBody.append("file", actualFile);
       const request = await (
-        await fetch(`${process.env.UPLOADS}`, {
+        await fetch("https://snapsnacks.onrender.com/uploads", {
           method: "POST",
           body: formBody,
         })
@@ -162,7 +163,7 @@ const AddRestaurant = () => {
           <div className="flex flex-col">
             <select
               className="input"
-              defaultValue={"sandwiches"}
+              defaultValue={"pastries"}
               {...register("categoryName")}
             >
               {categoryData.data?.allCategories.categories?.map((category) => (

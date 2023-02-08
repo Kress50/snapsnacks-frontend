@@ -95,8 +95,8 @@ const EditRestaurant = () => {
         }
         const formBody = new FormData();
         formBody.append("file", actualFile);
-        request = await(
-          await fetch(`${process.env.UPLOADS}`, {
+        request = await (
+          await fetch("https://snapsnacks.onrender.com/uploads", {
             method: "POST",
             body: formBody,
           })
